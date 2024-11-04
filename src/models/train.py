@@ -2,16 +2,16 @@ from tensorflow.keras.optimizers import Adam
 import matplotlib.pyplot as plt
 
 
-def compile_and_train(model, train_generator, test_generator, epochs=20, learning_rate=0.0001):
+def compile_and_train(model, train_generator, test_generator, epochs=0, learning_rate=0):
     model.compile(optimizer=Adam(learning_rate=learning_rate),  # Kleinere Lernrate
                   loss='categorical_crossentropy',
                   metrics=['accuracy'])
 
     history = model.fit(
-        train_generator.repeat(),  # `.repeat()` stellt sicher, dass der Generator nicht leer läuft
+        train_generator,
         steps_per_epoch=train_generator.samples // train_generator.batch_size,
         epochs=epochs,
-        validation_data=test_generator.repeat(),
+        validation_data=test_generator,
         validation_steps=test_generator.samples // test_generator.batch_size
     )
 
